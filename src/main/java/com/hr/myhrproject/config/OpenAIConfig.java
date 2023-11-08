@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OpenAIConfig {
 
-    String openaiApiKey="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";
+    String openaiApiKey="YOUR_KEY";
 
     @Bean
     public RestTemplate template(){
