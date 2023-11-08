@@ -7,6 +7,7 @@ import com.hr.myhrproject.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,9 @@ public class AuthenticationService {
     }
 
     public AuthentcationResponse authentication(AuthenticationRequest request) {
-        authenticationManager.authenticate(
+        Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),request.getPassword()
+                        request.getEmail(), request.getPassword()
                 )
         );
         var user=userRepository.findByEmail(request.getEmail()).orElseThrow();
