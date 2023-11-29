@@ -6,11 +6,18 @@ spring:
     password: 367300
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  redis:
+    host: localhost
+    port: 6379
+  main:
+     allow-bean-definition-overriding: true
+
+
 
