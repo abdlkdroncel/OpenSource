@@ -21,33 +21,23 @@ public class GptController {
 
     @Autowired private RestTemplate restTemplate;
     @Autowired private PromptService promptService;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+
     @GetMapping("/chat")
     public String chat(@RequestParam("prompt") String prompt){
-        ChatGptPrompt chatGptPrompt=new ChatGptPrompt();
-        List<ChatGptPrompt> all = promptService.getAll();
         String message="";
-        ChatGptPrompt test = promptService.findChatGptPromptByPrompt(prompt);
-        Set<String> keys = redisTemplate.keys("chatgptprompt");
-
-        if(all.contains(prompt)){
-            ChatGptPrompt chat = all.stream().filter(t -> t.getPrompt().equals(prompt)).findFirst().get();
-            message=chat.getMessage();
+        ChatGptPrompt chatGptPrompt = promptService.findChatGptPromptByPrompt(prompt);
+        if(chatGptPrompt!=null){
+            message=chatGptPrompt.getMessage();
         }else{
             ChatGPTRequest request=new ChatGPTRequest("gpt-3.5-turbo", prompt);
             ChatGPTResponse chatGptResponse = restTemplate.postForObject("https://api.openai.com/v1/chat/completions", request, ChatGPTResponse.class);
 
             message=chatGptResponse.getChoices().get(0).getMessage().getContent();
-
-            ChatGptPrompt chatGptPromptByPromt = promptService.findChatGptPromptByPrompt(prompt);
+            chatGptPrompt=new ChatGptPrompt();
             chatGptPrompt.setMessage(chatGptResponse.getChoices().get(0).getMessage().getContent());
             chatGptPrompt.setPrompt(prompt);
-            ChatGptPrompt save = promptService.save(chatGptPrompt);
+            promptService.save(chatGptPrompt);
         }
-
-
-
         return message;
     }
 }

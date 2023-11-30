@@ -18,7 +18,7 @@ public class PromptService {
     }
 
     public ChatGptPrompt findChatGptPromptByPrompt(String prompt){
-        return promptRepository.findChatGptPromptByPrompt(prompt);
+        return promptRepository.findByPrompt(prompt);
     }
 
     public List<ChatGptPrompt> getAll(){

@@ -1,6 +1,6 @@
 package com.hr.myhrproject.config;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -8,7 +8,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class OpenAIConfig {
 
-    String openaiApiKey="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";
+    @Value("${openai.api-key}")
+    private String openaiApiKey;
 
     @Bean
     public RestTemplate template(){
